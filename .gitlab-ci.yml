@@ -1,0 +1,25 @@
+
+minefieldtest:
+    script:
+        - javac -cp /home/gitlab-runner/junit_files/junit.jar -d .  src/MineField.java test/MineFieldTest.java
+        - java -cp /home/gitlab-runner/junit_files/hamcrest.jar:/home/gitlab-runner/junit_files/junit.jar:. org.junit.runner.JUnitCore MineFieldTest
+
+webcat-upload:
+    variables:
+        WEBCATCOURSE: "CPSC 255"
+        WEBCATTARGET: "p1-f20"
+    script:
+        - 'if [[ -z "$WCUSER" ]]; then'
+        - '  echo "WCUSER value is not set";'
+        - '  exit 1;'
+        - 'else'
+        - '  echo "$WCUSER" > login.txt;'
+        - 'fi'
+        - 'if [[ -z "$WCPASS" ]]; then'
+        - '  echo "WCPASS value is not set";'
+        - '  exit 1;'
+        - 'else'
+        - '  echo "$WCPASS" >> login.txt;'
+        - 'fi'
+        - 'echo "using WebCat login credentials:"'
+        - 'python3 webcat-submitter.py "$WEBCATCOURSE/$WEBCATTARGET" '
