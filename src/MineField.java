@@ -59,8 +59,14 @@ public class MineField {
      * @return a 2d boolean array (size rows * cols), all equal to false
      */
     public static boolean[][] setUpExposed(int rows, int cols) {
-        // @TODO - fix this
-        return null;
+        boolean[][] array = new boolean[rows][cols];
+        for (int r = 0; r < array.length; r++) {
+            for (int c = 0; c < array[r].length; c++) {
+                array[r][c] = false;
+            }
+        }
+
+        return array;
     }
 
 
