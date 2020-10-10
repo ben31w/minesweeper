@@ -36,7 +36,7 @@ public class MineField {
      * 
      * @formatter:on
      * @param field
-     *                  - the MineField from which a random point should be chosen
+     *            the MineField from which a random point should be chosen
      * @return random location within array
      */
     public static Point getRandomCell(int[][] field) {
@@ -106,31 +106,43 @@ public class MineField {
      *            to contain hints
      */
     public static void setHint(int[][] field) {
+        int lastRow = field.length - 1;
         for (int r = 0; r < field.length; r++) {
+            int lastCol = field[r].length - 1;
             for (int c = 0; c < field[r].length; c++) {
-                // Don't set a hint if the cell has a mine (-1).
+                // Don't set a hint if the cell is a mine (=-1).
                 if (field[r][c] == -1) {
                     continue;
                 }
                 // Otherwise, count adjacent mines.
                 int count = 0;
 
-                if (r != 0) {
-                    if (field[r - 1][c] == -1) {
-                        count++;
-                    }
+                if (r != 0 && field[r - 1][c] == -1) {
+                    count++;
                 }
-
-                if (r != field.length - 1 && field[r + 1][c] == -1) {
+                if (r != 0 && c != lastCol && field[r - 1][c + 1] == -1) {
+                    count++;
+                }
+                if (c != lastCol && field[r][c + 1] == -1) {
+                    count++;
+                }
+                if (r != lastRow && c != lastCol && field[r + 1][c + 1] == -1) {
+                    count++;
+                }
+                if (r != lastRow && field[r + 1][c] == -1) {
+                    count++;
+                }
+                if (r != lastRow && c != 0 && field[r + 1][c - 1] == -1) {
                     count++;
                 }
                 if (c != 0 && field[r][c - 1] == -1) {
                     count++;
                 }
-                if (c != field.length - 1 && field[r][c + 1] == -1) {
+                if (r != 0 && c != 0 && field[r - 1][c - 1] == -1) {
                     count++;
                 }
 
+                // Set the value of the cell to the number of adjacent mines.
                 field[r][c] = count;
             }
         }
