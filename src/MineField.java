@@ -307,6 +307,7 @@ public class MineField {
             for (int c = 0; c < field[r].length; c++) {
                 result += String.format(" %2d ", field[r][c]);
             }
+            result += System.lineSeparator();
         }
 
         return result;
@@ -327,7 +328,29 @@ public class MineField {
      *         around each cell.
      */
     public static String showBoard(int[][] field, boolean[][] exposed) {
-        return "";
+        String board = "";
+
+        for (int r = 0; r < field.length; r++) {
+            for (int c = 0; c < field[r].length; c++) {
+                // If the cell hasn't been exposed, it should be drawn as a '*'.
+                if (!exposed[r][c]) {
+                    board += String.format(" %4s ", "*");
+                }
+                else {
+                    // If the cell equals zero, display a blank space.
+                    if (field[r][c] == 0) {
+                        board += String.format(" %4s ", " ");
+                    }
+                    // Otherwise display the number of the cell.
+                    else {
+                        board += String.format(" %4d ", field[r][c]);
+                    }
+                }
+            }
+            board += System.lineSeparator();
+        }
+
+        return board;
     }
 
 
