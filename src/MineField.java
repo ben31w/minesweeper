@@ -301,8 +301,15 @@ public class MineField {
      *         a 2x3 array with a bomb at 0,1 would return " 1 -1 1\n1 1 1\n"
      */
     public static String fieldToString(int[][] field) {
-        // @TODO - fix this
-        return "";
+        String result = "";
+
+        for (int r = 0; r < field.length; r++) {
+            for (int c = 0; c < field[r].length; c++) {
+                result += String.format(" %2d ", field[r][c]);
+            }
+        }
+
+        return result;
     }
 
 
