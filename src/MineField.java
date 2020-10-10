@@ -72,9 +72,9 @@ public class MineField {
 
     /**
      * createMineField creates a 2d array of size rows x cols with the game
-     * setup. cells will have the following values: (1) -1 if the cell is a mine
-     * (2) 0 if the cell is not a mine, and the cell has no mines as neighbors
-     * (3) 1..8, 1 for each mine that the current cell touches. This method
+     * setup. Cells will have the following values: (a) -1 if the cell is a mine
+     * (b) 0 if the cell is not a mine, and the cell has no mines as neighbors
+     * (c) 1..8, 1 for each mine that the current cell touches. This method
      * should call getRandomCell to choose random places for the mines, and
      * setHint to set up the non-mine cells
      * 
@@ -88,8 +88,54 @@ public class MineField {
      * @return a 2d array of size rows x cols that is the MineField
      */
     public static int[][] createMineField(int rows, int cols, int mines) {
-        // @TODO - fix this
-        return null;
+        int[][] field = new int[rows][cols];
+
+        // If mines >= the area of the field, set all cells to mines.
+        if (mines >= rows * cols) {
+            for (int r = 0; r < field.length; r++) {
+                for (int c = 0; c < field[r].length; c++) {
+                    field[r][c] = -1;
+                }
+            }
+        }
+        // If mines take up more than half the field, temporarily set all cells
+        // to mines, then select random cells to remove mines from.
+        else if (mines > 0.5 * rows * cols) {
+            for (int r = 0; r < field.length; r++) {
+                for (int c = 0; c < field[r].length; c++) {
+                    field[r][c] = -1;
+                }
+            }
+
+            int minesRemoved = 0;
+            while (minesRemoved < rows * cols - mines) {
+                Point random = getRandomCell(field);
+                while (field[random.x][random.y] != -1) {
+                    random = getRandomCell(field);
+                }
+
+                field[random.x][random.y] = 0;
+                minesRemoved++;
+            }
+        }
+        // If mines take up less than half the field, select random cells to
+        // have mines.
+        else {
+            int minesPlaced = 0;
+            while (minesPlaced < mines) {
+                Point random = getRandomCell(field);
+                while (field[random.x][random.y] == -1) {
+                    random = getRandomCell(field);
+                }
+
+                field[random.x][random.y] = -1;
+                minesPlaced++;
+            }
+        }
+
+        setHint(field);
+
+        return field;
     }
 
 
