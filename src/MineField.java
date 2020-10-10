@@ -87,6 +87,7 @@ public class MineField {
      *            array (size rows * cols), all equal to false
      * @return a 2d array of size rows x cols that is the MineField
      */
+    // TODO Refactor this!
     public static int[][] createMineField(int rows, int cols, int mines) {
         int[][] field = new int[rows][cols];
 
@@ -151,6 +152,7 @@ public class MineField {
      *            - the MineField that contains the mines, and will be changed
      *            to contain hints
      */
+    // TODO Refactor this!
     public static void setHint(int[][] field) {
         int lastRow = field.length - 1;
         for (int r = 0; r < field.length; r++) {
@@ -209,8 +211,8 @@ public class MineField {
      * @param field
      *            - the mine field
      * @param exposed
-     *            - 2D array with whether a cell is exposed. exposed[x,y] should
-     *            be set to true in this method.
+     *            - 2D array with whether a cell is exposed. exposed[row][col]
+     *            should be set to true in this method.
      * @return false if we hit a mine, true otherwise
      */
     public static
@@ -270,8 +272,21 @@ public class MineField {
      *         T\n"
      */
     public static String exposedToString(boolean[][] exposed) {
-        // @TODO - fix this
-        return "";
+        String result = "";
+
+        for (int r = 0; r < exposed.length; r++) {
+            for (int c = 0; c < exposed[r].length; c++) {
+                if (exposed[r][c]) {
+                    result += "T ";
+                }
+                else {
+                    result += "F ";
+                }
+            }
+            result += System.lineSeparator();
+        }
+
+        return result;
     }
 
 
