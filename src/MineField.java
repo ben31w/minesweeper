@@ -1,4 +1,5 @@
 import java.awt.Point;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -394,20 +395,70 @@ public class MineField {
      *            for this parameter. We will cover args later in the semester.
      */
     public static void main(String[] args) {
+        // Scanner for user input.
         Scanner kbd = new Scanner(System.in);
-        // exposed is T if the cell is exposed. False otherwise.
+        // exposed tracks which cells have been exposed.
+        // True if the cell is exposed, false otherwise.
         boolean[][] exposed;
         // field is the game board. mines are -1. other values represent
         // the number of (eight connected) neighboring mines
         int[][] field;
-        System.out.println("This program plays MineField. To start,");
-        System.out.print("Enter number of rows then columns=> ");
-        int rows = kbd.nextInt();
-        int cols = kbd.nextInt();
-        System.out.print("Enter number of mines=> ");
-        int mines = kbd.nextInt();
+        // debugOn indicates whether the player is playing the game normally or
+        // in debug mode. In debug mode, the player can see the value of every
+        // cell and the exposed array.
+        boolean debugOn;
+        // The number of rows, columns, and mines in the field.
+        int rows = 0;
+        int cols = 0;
+        int mines = 0;
+
+        System.out.println("This program plays MineField.");
+
+        // Ask the user if they want to play in debug mode.
+        String choice = "a";
+        String validChoices = "NnYy";
+        while (validChoices.indexOf(choice) == -1) {
+            System.out.print("Do you want to play in debug mode? (Y/n) => ");
+            choice = kbd.next().toLowerCase();
+            if (choice.contentEquals("y")) {
+                debugOn = true;
+            }
+            else if (choice.contentEquals("n")) {
+                debugOn = false;
+            }
+            else {
+                System.out.println("Please enter y or n.");
+            }
+        }
+
+        // Ask the user how they want the field configured.
+        // Ask for rows and columns first.
+        while (rows == 0 || cols == 0) {
+            System.out.print("Enter number of rows then columns (ex: 4 4)=> ");
+            try {
+                rows = kbd.nextInt();
+                cols = kbd.nextInt();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please enter two valid non-zero numbers.");
+                String invalidAnswer = kbd.next(); // prevents infinite loop
+            }
+        }
+        // Ask how many mines the user wants to play with.
+        while (mines == 0) {
+            System.out.print("Enter number of mines=> ");
+            try {
+                mines = kbd.nextInt();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please enter a valid non-zero number.");
+                String invalidAnswer = kbd.next();
+            }
+        }
+
         exposed = setUpExposed(rows, cols);
         field = createMineField(rows, cols, mines);
+
         System.out.println(showBoard(field, exposed));
         while (!won(field, exposed)) {
             System.out.print(
@@ -416,7 +467,7 @@ public class MineField {
             int row = kbd.nextInt();
             int col = kbd.nextInt();
             if (!exposeCell(row, col, field, exposed)) {
-                System.out.println(fieldToString(field) + "You lose. sorry.");
+                System.out.println(fieldToString(field) + "You lose. Sorry.");
                 // System.exit leave the program immediately. 0 means that the
                 // program exited without an error code.
                 System.exit(0);
