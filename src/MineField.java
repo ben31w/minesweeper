@@ -40,6 +40,7 @@ public class MineField {
      *            the MineField from which a random point should be chosen
      * @return random location within array
      */
+    // TODO replace Math.random with Random
     public static Point getRandomCell(int[][] field) {
         double dx = Math.random() * field.length;
         int x = (int)dx;
@@ -394,6 +395,7 @@ public class MineField {
      *            - not used this time. But debug mode would be an excellent use
      *            for this parameter. We will cover args later in the semester.
      */
+    // TODO Refactor this!
     public static void main(String[] args) {
         // Scanner for user input.
         Scanner kbd = new Scanner(System.in);
@@ -438,6 +440,11 @@ public class MineField {
             try {
                 rows = kbd.nextInt();
                 cols = kbd.nextInt();
+
+                if (rows == 0 || cols == 0) {
+                    System.out
+                        .println("Please enter two valid non-zero numbers.");
+                }
             }
             catch (InputMismatchException e) {
                 System.out.println("Please enter two valid non-zero numbers.");
@@ -449,6 +456,17 @@ public class MineField {
             System.out.print("Enter number of mines=> ");
             try {
                 mines = kbd.nextInt();
+
+                // Can't play with zero or too many mines!
+                if (mines == 0) {
+                    System.out.println("Please enter a valid non-zero number.");
+                }
+                else if (mines >= rows * cols) {
+                    System.out.println(
+                        "Too many mines! Must be less than " + (rows * cols)
+                            + ".");
+                    mines = 0;
+                }
             }
             catch (InputMismatchException e) {
                 System.out.println("Please enter a valid non-zero number.");
@@ -456,22 +474,45 @@ public class MineField {
             }
         }
 
+        // Set the two fields and show the board.
         exposed = setUpExposed(rows, cols);
         field = createMineField(rows, cols, mines);
-
         System.out.println(showBoard(field, exposed));
+
+        // Play the game until the player wins (or loses)!
         while (!won(field, exposed)) {
-            System.out.print(
-                "Enter a row and column value"
-                    + "(0 0 is top left corner) => ");
-            int row = kbd.nextInt();
-            int col = kbd.nextInt();
+            // Ask the user to enter a valid row and column.
+            int row = -1;
+            int col = -1;
+            while (row == -1 || col == -1) {
+                System.out.print(
+                    "Enter a row and column value "
+                        + "(0 0 is top left corner) => ");
+                try {
+                    row = kbd.nextInt();
+                    col = kbd.nextInt();
+
+                    if (row < 0 || col < 0 || row > field.length
+                        || col > field[0].length) {
+                        System.out.println("Please enter valid coordinates.");
+                        row = -1;
+                        col = -1;
+                    }
+                }
+                catch (InputMismatchException e) {
+                    System.out.println("Please enter valid coordinates.");
+                    String invalidAnswer = kbd.nextLine();
+                }
+
+            }
+            // Check when the player hits a mine.
             if (!exposeCell(row, col, field, exposed)) {
                 System.out.println(fieldToString(field) + "You lose. Sorry.");
                 // System.exit leave the program immediately. 0 means that the
                 // program exited without an error code.
                 System.exit(0);
             }
+
             System.out.println("\nBoard:\n" + showBoard(field, exposed));
         }
         kbd.close();
