@@ -448,7 +448,7 @@ public class MineField {
             }
             catch (InputMismatchException e) {
                 System.out.println("Please enter two valid non-zero numbers.");
-                String invalidAnswer = kbd.next(); // prevents infinite loop
+                String invalidAnswer = kbd.nextLine(); // prevents infinite loop
             }
         }
         // Ask how many mines the user wants to play with.
@@ -470,7 +470,7 @@ public class MineField {
             }
             catch (InputMismatchException e) {
                 System.out.println("Please enter a valid non-zero number.");
-                String invalidAnswer = kbd.next();
+                String invalidAnswer = kbd.nextLine();
             }
         }
 
