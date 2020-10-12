@@ -441,7 +441,7 @@ public class MineField {
                 rows = kbd.nextInt();
                 cols = kbd.nextInt();
 
-                if (rows == 0 || cols == 0) {
+                if (rows <= 0 || cols <= 0) {
                     System.out
                         .println("Please enter two valid non-zero numbers.");
                 }
@@ -458,7 +458,7 @@ public class MineField {
                 mines = kbd.nextInt();
 
                 // Can't play with zero or too many mines!
-                if (mines == 0) {
+                if (mines <= 0) {
                     System.out.println("Please enter a valid non-zero number.");
                 }
                 else if (mines >= rows * cols) {
