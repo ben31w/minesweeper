@@ -408,7 +408,7 @@ public class MineField {
         // debugOn indicates whether the player is playing the game normally or
         // in debug mode. In debug mode, the player can see the value of every
         // cell and the exposed array.
-        boolean debugOn;
+        boolean debugOn = false;
         // The number of rows, columns, and mines in the field.
         int rows = 0;
         int cols = 0;
@@ -421,7 +421,7 @@ public class MineField {
         String validChoices = "NnYy";
         while (validChoices.indexOf(choice) == -1) {
             System.out.print("Do you want to play in debug mode? (Y/n) => ");
-            choice = kbd.next().toLowerCase();
+            choice = kbd.nextLine().toLowerCase();
             if (choice.contentEquals("y")) {
                 debugOn = true;
             }
@@ -474,10 +474,15 @@ public class MineField {
             }
         }
 
-        // Set the two fields and show the board.
+        // Set up the mine field and exposed.
         exposed = setUpExposed(rows, cols);
         field = createMineField(rows, cols, mines);
+
+        // Show the mine field. If debug is on, show the field's values.
         System.out.println(showBoard(field, exposed));
+        if (debugOn) {
+            System.out.println(fieldToString(field));
+        }
 
         // Play the game until the player wins (or loses)!
         while (!won(field, exposed)) {
@@ -505,6 +510,7 @@ public class MineField {
                 }
 
             }
+
             // Check when the player hits a mine.
             if (!exposeCell(row, col, field, exposed)) {
                 System.out.println(fieldToString(field) + "You lose. Sorry.");
@@ -513,7 +519,11 @@ public class MineField {
                 System.exit(0);
             }
 
+            // Show the field.
             System.out.println("\nBoard:\n" + showBoard(field, exposed));
+            if (debugOn) {
+                System.out.println(fieldToString(field));
+            }
         }
         kbd.close();
         if (won(field, exposed)) {
