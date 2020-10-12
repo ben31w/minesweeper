@@ -386,6 +386,28 @@ public class MineField {
 
 
     /**
+     * Helper method prints the mine field. If the player is in debug mode, this
+     * method also prints the values of the mine field.
+     * 
+     * @param field
+     *            the mine field to be printed
+     * @param exposed
+     *            boolean array that indicates which cells have been exposed.
+     *            Needed to call showBoard.
+     * @param debugOn
+     *            if true print the values of the mine field
+     */
+    private static
+        void
+        printBoards(int[][] field, boolean[][] exposed, boolean debugOn) {
+        System.out.println("\nBoard:\n" + showBoard(field, exposed));
+        if (debugOn) {
+            System.out.println(fieldToString(field));
+        }
+    }
+
+
+    /**
      * main is correct as written, but does not have a debug option. You should
      * add that. That will require adding code in main. Do not change anything
      * else. Do not use nextLine() here or anywhere in the program. If you need
@@ -478,11 +500,7 @@ public class MineField {
         exposed = setUpExposed(rows, cols);
         field = createMineField(rows, cols, mines);
 
-        // Show the mine field. If debug is on, show the field's values.
-        System.out.println(showBoard(field, exposed));
-        if (debugOn) {
-            System.out.println(fieldToString(field));
-        }
+        printBoards(field, exposed, debugOn);
 
         // Play the game until the player wins (or loses)!
         while (!won(field, exposed)) {
@@ -518,12 +536,7 @@ public class MineField {
                 // program exited without an error code.
                 System.exit(0);
             }
-
-            // Show the field.
-            System.out.println("\nBoard:\n" + showBoard(field, exposed));
-            if (debugOn) {
-                System.out.println(fieldToString(field));
-            }
+            printBoards(field, exposed, debugOn);
         }
         kbd.close();
         if (won(field, exposed)) {
