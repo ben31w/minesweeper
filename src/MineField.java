@@ -483,7 +483,7 @@ public class MineField {
                 if (mines <= 0) {
                     System.out.println("Please enter a valid non-zero number.");
                 }
-                else if (mines >= rows * cols) {
+                else if (rows * cols > 1 && mines >= rows * cols) {
                     System.out.println(
                         "Too many mines! Must be less than " + (rows * cols)
                             + ".");
