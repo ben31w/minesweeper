@@ -409,6 +409,20 @@ public class MineField {
 
 
     /**
+     * Helper method checks when the user inputs a 'q', and exits the program if
+     * so.
+     * 
+     * @param input
+     *            a string that the user inputs
+     */
+    private static void checkQuitKey(String input) {
+        if (input.contentEquals("q")) {
+            System.exit(0);
+        }
+    }
+
+
+    /**
      * main is correct as written, but does not have a debug option. You should
      * add that. That will require adding code in main. Do not change anything
      * else. Do not use nextLine() here or anywhere in the program. If you need
@@ -445,10 +459,8 @@ public class MineField {
         while (validChoices.indexOf(choice) == -1) {
             System.out.print("Do you want to play in debug mode? (Y/n) => ");
             choice = kbd.nextLine().toLowerCase();
-            if (choice.contentEquals("q")) {
-                System.exit(0);
-            }
-            else if (choice.contentEquals("y")) {
+            checkQuitKey(choice);
+            if (choice.contentEquals("y")) {
                 debugOn = true;
             }
             else if (choice.contentEquals("n")) {
@@ -474,9 +486,7 @@ public class MineField {
             }
             catch (InputMismatchException e) {
                 String invalid = kbd.nextLine().toLowerCase();
-                if (invalid.contentEquals("q")) {
-                    System.exit(0);
-                }
+                checkQuitKey(invalid);
 
                 System.out.println("Please enter two valid non-zero numbers.");
             }
@@ -500,9 +510,7 @@ public class MineField {
             }
             catch (InputMismatchException e) {
                 String invalid = kbd.nextLine().toLowerCase();
-                if (invalid.contentEquals("q")) {
-                    System.exit(0);
-                }
+                checkQuitKey(invalid);
 
                 System.out.println("Please enter a valid non-zero number.");
             }
@@ -536,9 +544,7 @@ public class MineField {
                 }
                 catch (InputMismatchException e) {
                     String invalid = kbd.nextLine().toLowerCase();
-                    if (invalid.contentEquals("q")) {
-                        System.exit(0);
-                    }
+                    checkQuitKey(invalid);
 
                     System.out.println("Please enter valid coordinates.");
                 }
