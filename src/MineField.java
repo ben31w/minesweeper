@@ -48,7 +48,7 @@ public class MineField {
 
         int x = rand.nextInt(field.length);
         int y = rand.nextInt(field[0].length);
-        System.out.println(x + ", " + y);
+
         return new Point(x, y);
     }
 
@@ -436,7 +436,8 @@ public class MineField {
         int cols = 0;
         int mines = 0;
 
-        System.out.println("This program plays MineField.");
+        System.out.println(
+            "This program plays MineField. Enter 'q' at any time to quit.");
 
         // Ask the user if they want to play in debug mode.
         String choice = "a";
@@ -444,7 +445,10 @@ public class MineField {
         while (validChoices.indexOf(choice) == -1) {
             System.out.print("Do you want to play in debug mode? (Y/n) => ");
             choice = kbd.nextLine().toLowerCase();
-            if (choice.contentEquals("y")) {
+            if (choice.contentEquals("q")) {
+                System.exit(0);
+            }
+            else if (choice.contentEquals("y")) {
                 debugOn = true;
             }
             else if (choice.contentEquals("n")) {
@@ -469,8 +473,12 @@ public class MineField {
                 }
             }
             catch (InputMismatchException e) {
+                String invalid = kbd.nextLine().toLowerCase();
+                if (invalid.contentEquals("q")) {
+                    System.exit(0);
+                }
+
                 System.out.println("Please enter two valid non-zero numbers.");
-                String invalidAnswer = kbd.nextLine(); // prevents infinite loop
             }
         }
         // Ask how many mines the user wants to play with.
@@ -491,8 +499,12 @@ public class MineField {
                 }
             }
             catch (InputMismatchException e) {
+                String invalid = kbd.nextLine().toLowerCase();
+                if (invalid.contentEquals("q")) {
+                    System.exit(0);
+                }
+
                 System.out.println("Please enter a valid non-zero number.");
-                String invalidAnswer = kbd.nextLine();
             }
         }
 
@@ -523,8 +535,12 @@ public class MineField {
                     }
                 }
                 catch (InputMismatchException e) {
+                    String invalid = kbd.nextLine().toLowerCase();
+                    if (invalid.contentEquals("q")) {
+                        System.exit(0);
+                    }
+
                     System.out.println("Please enter valid coordinates.");
-                    String invalidAnswer = kbd.nextLine();
                 }
 
             }
