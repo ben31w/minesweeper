@@ -23,8 +23,8 @@ public class MineField {
      * 
      * Use the rand object declared above for this method. (see
      * https://docs.oracle.com/en/java/javase/11/docs/api/java.desktop/java/awt/Point.html)
-     * To declare a Point, and make the x value be 3 and the y value be 4 (3, 4),
-     * and then return that value, use:
+     * To declare a Point, and make the x value be 3 and the y value be 4 
+     * (3, 4), and then return that value, use:
      * 
      * @formatter:off
      * 
