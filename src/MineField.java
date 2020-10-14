@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Class to define MineField for MineSweeper game
  *
  * @author Ben Wright
- * @version 2020.10.02
+ * @version 2020.10.14
  */
 
 public class MineField {
@@ -40,13 +40,15 @@ public class MineField {
      *            the MineField from which a random point should be chosen
      * @return random location within array
      */
-    // TODO replace Math.random with Random
     public static Point getRandomCell(int[][] field) {
-        double dx = Math.random() * field.length;
-        int x = (int)dx;
-        double dy = Math.random() * field[0].length;
-        int y = (int)dy;
+// double dx = Math.random() * field.length;
+// int x = (int)dx;
+// double dy = Math.random() * field[0].length;
+// int y = (int)dy;
 
+        int x = rand.nextInt(field.length);
+        int y = rand.nextInt(field[0].length);
+        System.out.println(x + ", " + y);
         return new Point(x, y);
     }
 
@@ -89,11 +91,11 @@ public class MineField {
      *            array (size rows * cols), all equal to false
      * @return a 2d array of size rows x cols that is the MineField
      */
-    // TODO Refactor this!
     public static int[][] createMineField(int rows, int cols, int mines) {
         int[][] field = new int[rows][cols];
 
         // If mines >= the area of the field, set all cells to mines.
+        // NOTE: Because of the way the main is set up, this will never happen.
         if (mines >= rows * cols) {
             for (int r = 0; r < field.length; r++) {
                 for (int c = 0; c < field[r].length; c++) {
@@ -154,7 +156,6 @@ public class MineField {
      *            - the MineField that contains the mines, and will be changed
      *            to contain hints
      */
-    // TODO Refactor this!
     public static void setHint(int[][] field) {
         int lastRow = field.length - 1;
         for (int r = 0; r < field.length; r++) {
@@ -164,9 +165,9 @@ public class MineField {
                 if (field[r][c] == -1) {
                     continue;
                 }
+
                 // Otherwise, count adjacent mines.
                 int count = 0;
-
                 if (r != 0 && field[r - 1][c] == -1) {
                     count++;
                 }
@@ -417,7 +418,6 @@ public class MineField {
      *            - not used this time. But debug mode would be an excellent use
      *            for this parameter. We will cover args later in the semester.
      */
-    // TODO Refactor this!
     public static void main(String[] args) {
         // Scanner for user input.
         Scanner kbd = new Scanner(System.in);
