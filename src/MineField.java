@@ -7,45 +7,22 @@ import java.util.Scanner;
  * Class to define MineField for MineSweeper game
  *
  * @author Ben Wright
- * @version 2020.10.14
+ * @version 2021.10.08
  */
 
 public class MineField {
-
-    // private means cannot be viewed outside class, but any method in class can
-    // use this.
-    /** Private instance of random number generator */
+    /** Random number generator used to get random cells */
     private static Random rand = new Random();
 
     /**
-     * Helper method to create random point within array bounds. A Point object 
-     * is an easy way to store x, y values in one object.
+     * Helper method to create random point within 2D-array bounds. 
+     * A Point object is an easy way to store x, y values in one object.
      * 
-     * Use the rand object declared above for this method. (see
-     * https://docs.oracle.com/en/java/javase/11/docs/api/java.desktop/java/awt/Point.html)
-     * To declare a Point, and make the x value be 3 and the y value be 4 
-     * (3, 4), and then return that value, use:
-     * 
-     * @formatter:off
-     * 
-     *                <pre>
-     * Point location = new Point()
-     * location.x = 3;
-     * location.y = 4;
-     * return location;
-     *                </pre>
-     * 
-     * @formatter:on
      * @param field
      *            the MineField from which a random point should be chosen
      * @return random location within array
      */
     public static Point getRandomCell(int[][] field) {
-// double dx = Math.random() * field.length;
-// int x = (int)dx;
-// double dy = Math.random() * field[0].length;
-// int y = (int)dy;
-
         int x = rand.nextInt(field.length);
         int y = rand.nextInt(field[0].length);
 
@@ -54,13 +31,15 @@ public class MineField {
 
 
     /**
-     * setUpExposed creates a 2d array of false values of size rows x cols
+     * Creates a 2D-array of false values of size rows x cols.
+     * This array is used to track which cells in the actual mine field have 
+     * been exposed.
      * 
      * @param rows
      *            number of rows in the mine field
      * @param cols
      *            number of columns in the mine field
-     * @return a 2d boolean array (size rows * cols), all equal to false
+     * @return a 2D-boolean-array (size rows x cols), all equal to false
      */
     public static boolean[][] setUpExposed(int rows, int cols) {
         boolean[][] array = new boolean[rows][cols];
@@ -75,21 +54,25 @@ public class MineField {
 
 
     /**
-     * createMineField creates a 2d array of size rows x cols with the game
-     * setup. Cells will have the following values: (a) -1 if the cell is a mine
-     * (b) 0 if the cell is not a mine, and the cell has no mines as neighbors
-     * (c) 1..8, 1 for each mine that the current cell touches. This method
-     * should call getRandomCell to choose random places for the mines, and
-     * setHint to set up the non-mine cells
+     * Create a 2D-array of size rows x cols with the game setup. 
+     * Cells will have the following values: 
+     * <ul>
+     * 	    <li> -1 if the cell is a mine </li>
+     *      <li> 0 if the cell is not a mine, and the cell has no mines as neighbors </li>
+     *      <li> 1..8, 1 for each mine that the current cell touches. </li> 
+     * </ul>
+     * 
+     * This method calls getRandomCell to choose random places for the mines, 
+     * and setHint to set the value for the non-mine cells.
      * 
      * @param rows
      *            number of rows in the mine field
      * @param cols
      *            number of columns in the mine field
      * @param mines
-     *            number of mines in the mine field return a new 2d boolean
-     *            array (size rows * cols), all equal to false
-     * @return a 2d array of size rows x cols that is the MineField
+     *            number of mines in the mine field
+     * @return a 2D-integer-array (size rows x cols) representing the 
+     *         mine field game board
      */
     public static int[][] createMineField(int rows, int cols, int mines) {
         int[][] field = new int[rows][cols];
@@ -145,23 +128,19 @@ public class MineField {
 
 
     /**
-     * Given a minefield (-1 for mines) set all non negative cells to count the
-     * number of adjacent cells that contain mines (8-connected including
-     * diagonal corners) If a cell has a mine (-1 value), then leave it -1. If a
-     * cell does not have a mine (0 initially), then calculate the number of
-     * mines in its eight neighbors, and write that value. Look at the sample
-     * run to see an example of these numbers.
+     * Given a mine field (2D-integer-array with -1 for mines), set the value 
+     * of all non-negative cells to the number of mines they border (0-8).
      * 
      * @param field
-     *            - the MineField that contains the mines, and will be changed
-     *            to contain hints
+     *          the mine field that contains the mines; all other values in this 
+     *          field will be changed to reflect the number of adjacent mines
      */
     public static void setHint(int[][] field) {
         int lastRow = field.length - 1;
         for (int r = 0; r < field.length; r++) {
             int lastCol = field[r].length - 1;
             for (int c = 0; c < field[r].length; c++) {
-                // Don't set a hint if the cell is a mine (=-1).
+                // Don't set a hint if the cell is a mine.
                 if (field[r][c] == -1) {
                     continue;
                 }
@@ -201,21 +180,19 @@ public class MineField {
 
 
     /**
-     * Expose cell exposes specified cell. If a mine, returns false (i.e. we
+     * Expose cell exposes specified cell. If a mine, returns false (i.e., we
      * dead); if a hint, returns true; if zero, then exposes all neighbors until
-     * hints are exposed. This method is written for you. **Do not modify it!**
-     * It solves the problem of exposing neighbor cells by calling exposeCell
-     * recursively. We will cover recursion later this semester.
+     * hints are exposed.
      *
      * @param row
-     *            - cell row
+     *          cell row
      * @param col
-     *            - cell column
+     *          cell column
      * @param field
-     *            - the mine field
+     *          the mine field
      * @param exposed
-     *            - 2D array with whether a cell is exposed. exposed[row][col]
-     *            should be set to true in this method.
+     *          2D array with whether a cell is exposed. exposed[row][col]
+     *          should be set to true in this method.
      * @return false if we hit a mine, true otherwise
      */
     public static
@@ -233,7 +210,7 @@ public class MineField {
         }
 
         if (field[row][col] > 0) {
-            // stop recursion if neighboring a mine
+            // Stop recursion if neighboring a mine
             return true;
         }
 
@@ -269,12 +246,13 @@ public class MineField {
      * Returns a single string with the contents of the exposed array
      * 
      * @param exposed
-     *            - array of T/F indicating whether each cell is exposed
+     *          array indicating whether each cell is exposed
      * @return a string expression of the values in Exposed. For example, a 2x3
      *         array with all True values except (1,1) would return "T T T\nT F
      *         T\n"
      */
     public static String exposedToString(boolean[][] exposed) {
+    	//TODO change this to StringBuilder
         String result = "";
 
         for (int r = 0; r < exposed.length; r++) {
@@ -294,16 +272,17 @@ public class MineField {
 
 
     /**
-     * Returns a single string with the contents of field. Each number should be
+     * Returns a single string with the contents of field. Each number should be 
      * formatted to take up 2 spaces, and there should be a space around each
      * value.
      * 
      * @param field
-     *            the mine field
+     *          the mine field
      * @return Returns a string representation of the field array. For example,
      *         a 2x3 array with a bomb at 0,1 would return " 1 -1 1\n1 1 1\n"
      */
     public static String fieldToString(int[][] field) {
+    	//TODO change this to StringBuilder
         String result = "";
 
         for (int r = 0; r < field.length; r++) {
@@ -318,19 +297,24 @@ public class MineField {
 
 
     /**
-     * showBoard with each row in separate line, newline between. Use 4
-     * characters per cell ' * ' if not exposed ' -1 ' if mine ' # ' where # is
-     * hint - the number of adjacent mines
-     * 
+     * Return a string representation of the mine field given 2D-arrays 
+     * representing the mine field and exposed cells. Each row is on a separate 
+     * line. Each cell is formatted to take up 4 characters and contains:
+     * <ul>
+     *      <li> ' * ' if not exposed </li>
+     *      <li> ' -1 ' if mine </li>
+     *      <li> ' # ' where # is the number of adjacent mines </li>
+     * </ul>
      * @param field
-     *            - the minefield
+     *           the mine field
      * @param exposed
-     *            - a 2d array indicating whether each cell has been exposed.
+     *           a 2D-boolean-array indicating whether each cell has been exposed.
      * @return single string with each cell represented as * (if still hidden),
      *         -1 (if a mine), or n (a number indicating how many mines are
      *         around each cell.
      */
     public static String showBoard(int[][] field, boolean[][] exposed) {
+    	//TODO change this to StringBuilder
         String board = "";
 
         for (int r = 0; r < field.length; r++) {
@@ -359,10 +343,10 @@ public class MineField {
 
     /**
      * Return true if the arrays indicate a win, false otherwise. A player wins
-     * if they have exposed all and only values that are not bombs.
+     * if they have exposed all non-mine cells.
      * 
      * @param field
-     *            the minefield
+     *            the mine field
      * @param exposed
      *            the cells that are exposed
      * @return true for a win, false otherwise.
@@ -387,8 +371,9 @@ public class MineField {
 
 
     /**
-     * Helper method prints the mine field. If the player is in debug mode, this
-     * method also prints the values of the mine field.
+     * Helper method prints the mine field every time the player guesses a cell. 
+     * If the player is in debug mode, this method also prints a version of the 
+     * mine field with all values exposed.
      * 
      * @param field
      *            the mine field to be printed
@@ -396,11 +381,9 @@ public class MineField {
      *            boolean array that indicates which cells have been exposed.
      *            Needed to call showBoard.
      * @param debugOn
-     *            if true print the values of the mine field
+     *            if true, print the mine field and all its values
      */
-    private static
-        void
-        printBoards(int[][] field, boolean[][] exposed, boolean debugOn) {
+    private static void printBoards(int[][] field, boolean[][] exposed, boolean debugOn) {
         System.out.println("\nBoard:\n" + showBoard(field, exposed));
         if (debugOn) {
             System.out.println(fieldToString(field));
@@ -409,7 +392,7 @@ public class MineField {
 
 
     /**
-     * Helper method checks when the user inputs a 'q', and exits the program if
+     * Helper method checks when the user inputs a 'q', and exits the program if 
      * so.
      * 
      * @param input
@@ -423,10 +406,7 @@ public class MineField {
 
 
     /**
-     * main is correct as written, but does not have a debug option. You should
-     * add that. That will require adding code in main. Do not change anything
-     * else. Do not use nextLine() here or anywhere in the program. If you need
-     * to read a String, use next().
+     * Used to run the game.
      * 
      * @param args
      *            - not used this time. But debug mode would be an excellent use
