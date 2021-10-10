@@ -252,28 +252,26 @@ public class MineField {
      *         T\n"
      */
     public static String exposedToString(boolean[][] exposed) {
-    	//TODO change this to StringBuilder
-        String result = "";
-
+        StringBuilder sb = new StringBuilder();
         for (int r = 0; r < exposed.length; r++) {
             for (int c = 0; c < exposed[r].length; c++) {
                 if (exposed[r][c]) {
-                    result += "T ";
+                    sb.append("T ");
                 }
                 else {
-                    result += "F ";
+                    sb.append("F ");
                 }
             }
-            result += System.lineSeparator();
+            sb.append( System.lineSeparator() );
         }
 
-        return result;
+        return sb.toString();
     }
 
 
     /**
      * Returns a single string with the contents of field. Each number should be 
-     * formatted to take up 2 spaces, and there should be a space around each
+     * formatted to take up 2 characters, and there should be a space around each
      * value.
      * 
      * @param field
@@ -282,24 +280,27 @@ public class MineField {
      *         a 2x3 array with a bomb at 0,1 would return " 1 -1 1\n1 1 1\n"
      */
     public static String fieldToString(int[][] field) {
-    	//TODO change this to StringBuilder
-        String result = "";
-
+        StringBuilder sb = new StringBuilder();
         for (int r = 0; r < field.length; r++) {
             for (int c = 0; c < field[r].length; c++) {
-                result += String.format(" %2d ", field[r][c]);
+                sb.append( String.format(" %2d ", field[r][c]) );
             }
-            result += System.lineSeparator();
+            sb.append( System.lineSeparator() );
         }
 
-        return result;
+        return sb.toString();
     }
 
 
     /**
-     * Return a string representation of the mine field given 2D-arrays 
-     * representing the mine field and exposed cells. Each row is on a separate 
-     * line. Each cell is formatted to take up 4 characters and contains:
+     * Return a string representation of the mine field given 2D-arrays for the 
+     * the mine field (integer-array) and which cells have been exposed in the 
+     * field (boolean-array). 
+     * 
+     * Each row is on a separate line. Each cell is formatted to take up 4 
+     * characters, with space around each cell.
+     * 
+     * The content of each cell will be:
      * <ul>
      *      <li> ' * ' if not exposed </li>
      *      <li> ' -1 ' if mine </li>
@@ -314,30 +315,28 @@ public class MineField {
      *         around each cell.
      */
     public static String showBoard(int[][] field, boolean[][] exposed) {
-    	//TODO change this to StringBuilder
-        String board = "";
-
+        StringBuilder sb = new StringBuilder();
         for (int r = 0; r < field.length; r++) {
             for (int c = 0; c < field[r].length; c++) {
                 // If the cell hasn't been exposed, it should be drawn as a '*'.
                 if (!exposed[r][c]) {
-                    board += String.format(" %4s ", "*");
+                    sb.append( String.format(" %4s ", "*") );
                 }
                 else {
                     // If the cell equals zero, display a blank space.
                     if (field[r][c] == 0) {
-                        board += String.format(" %4s ", " ");
+                        sb.append( String.format(" %4s ", " ") );
                     }
                     // Otherwise display the number of the cell.
                     else {
-                        board += String.format(" %4d ", field[r][c]);
+                        sb.append( String.format(" %4d ", field[r][c]) );
                     }
                 }
             }
-            board += System.lineSeparator();
+            sb.append( System.lineSeparator() );
         }
 
-        return board;
+        return sb.toString();
     }
 
 
