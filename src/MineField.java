@@ -408,8 +408,7 @@ public class MineField {
      * Used to run the game.
      * 
      * @param args
-     *            - not used this time. But debug mode would be an excellent use
-     *            for this parameter. We will cover args later in the semester.
+     *            not used this time
      */
     public static void main(String[] args) {
         // Scanner for user input.
@@ -421,8 +420,8 @@ public class MineField {
         // the number of (eight connected) neighboring mines
         int[][] field;
         // debugOn indicates whether the player is playing the game normally or
-        // in debug mode. In debug mode, the player can see the value of every
-        // cell and the exposed array.
+        // in debug mode. In debug mode, the player can a copy of the mine field 
+        // with all the cells revealed.
         boolean debugOn = false;
         // The number of rows, columns, and mines in the field.
         int rows = 0;
@@ -430,19 +429,22 @@ public class MineField {
         int mines = 0;
 
         System.out.println(
-            "This program plays MineField. Enter 'q' at any time to quit.");
+            "Welcome to MineField. Enter 'q' at any time to quit.");
 
         // Ask the user if they want to play in debug mode.
         String choice = "a";
         String validChoices = "NnYy";
         while (validChoices.indexOf(choice) == -1) {
-            System.out.print("Do you want to play in debug mode? (Y/n) => ");
+            System.out.print("Do you want to play in debug mode? "
+            		+ "In debug mode, you can see the value of each cell in the "
+            		+ "mine field. "
+            		+ "(Y/n) => ");
             choice = kbd.nextLine().toLowerCase();
             checkQuitKey(choice);
-            if (choice.contentEquals("y")) {
+            if (choice.contentEquals("y") || choice.contentEquals("yes")) {
                 debugOn = true;
             }
-            else if (choice.contentEquals("n")) {
+            else if (choice.contentEquals("n") || choice.contentEquals("no")) {
                 debugOn = false;
             }
             else {
